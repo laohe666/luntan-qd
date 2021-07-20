@@ -1,0 +1,7 @@
+var regUrl = "http://localhost:8082/reg"
+var loginUrl = "http://localhost:8082/login"
+var isLoginUrl = "http://localhost:8082/isLogin"
+var showAllNWTUrl = "http://localhost:8082/showAllNWT"
+var showNSlideUrl = "http://localhost:8082/showNSlide"
+var showAllNTalkUrl = "http://localhost:8082/showAllNTalk"
+var sendTalkUrl = "http://localhost:8082/sdTalk"

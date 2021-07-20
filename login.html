@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+<meta charset="utf-8">
+<title>登陆注册</title>
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="shortcut icon" href="images/weblogo.ico" type="image/x-icon">
+<script src="js/jquery-3.5.1.js"></script>
+</head>
+
+<body>
+    <div class="content">
+        <div class="form sign-in">
+            <h2>欢迎回来</h2>
+            <label>
+                <span>邮箱</span>
+                <input type="text" id="loginEmail"/>
+            </label>
+            <label>
+                <span>密码</span>
+                <input type="password" id="loginPassword"/>
+            </label>
+            <p class="forgot-pass"><a href="javascript:">忘记密码？</a></p>
+            <button type="button" class="submit" id="login">登 录</button>
+        </div>
+        <div class="sub-cont">
+            <div class="img">
+                <div class="img__text m--up">
+                    <h2>还未注册？</h2>
+                    <p>立即注册，发现大量机会！</p>
+                </div>
+                <div class="img__text m--in">
+                    <h2>已有帐号？</h2>
+                    <p>有帐号就登录吧，好久不见了！</p>
+                </div>
+                <div class="img__btn">
+                    <span class="m--up">注 册</span>
+                    <span class="m--in">登 录</span>
+                </div>
+            </div>
+            <div class="form sign-up">
+                <h2>立即注册</h2>
+                <label>
+                    <span style="color: #ff0000" id="regMsg"></span>
+                </label>
+                <label>
+                    <span>昵称</span>
+                    <input type="text" id="nickname" />
+                </label>
+                <label>
+                    <span>邮箱</span>
+                    <input type="text" id="regEmail" />
+                </label>
+                <label>
+                    <span>密码</span>
+                    <input type="password" id="regPassword"/>
+                </label>
+                <button type="button" class="submit" id="reg">注 册</button>
+<!--                <button type="button" class="fb-btn">使用 <span>facebook</span> 帐号注册</button>-->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/login.js"></script>
+    <script src="js/config.js"></script>
+    <script>
+        $("#reg").click(function () {
+            var check = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            var user = {
+                nickname : $("#nickname").val(),
+                email : $("#regEmail").val(),
+                password :$("#regPassword").val()
+            }
+            if(user.nickname.length > 5){
+                $("#regMsg").text("昵称长度不能大于5")
+                    return;
+            } else if (user.password.length > 25) {
+                $("#regMsg").text("密码最大长度25")
+                    return;
+            } else if(user.email.length > 25 || !check.test(user.email)){
+                $("#regMsg").text("邮箱格式错误")
+                    return;
+            }
+            //验证完毕之后
+            reg(user)
+        })
+
+        $("#login").click(function () {
+            var user = {
+                email: $("#loginEmail").val(),
+                password: $("#loginPassword").val()
+            }
+            //登陆用户
+            login(user)
+        })
+
+
+        function reg(obj){
+            $.ajax({
+                url : regUrl,
+                type : 'post',
+                dataType : 'json',
+                data : JSON.stringify(obj),
+                contentType: "application/json; charset=utf-8",
+                async : false,
+                success : function (data) {
+                    alert(data.msg)
+                }
+            })
+        }
+
+        function login(obj){
+            $.ajax({
+                url : loginUrl,
+                type: 'post',
+                dataType: 'json',
+                data: JSON.stringify(obj),
+                contentType: "application/json; charset=utf-8",
+                success : function (data) {
+                    if(data.state == "YES"){
+                        localStorage.setItem("token",data.token);
+                        window.open("index.html")
+                    } else {
+
+                    }
+                }
+            })
+        }
+    </script>
+
+</body>
+
+</html>

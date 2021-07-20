@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>尊龙论坛--需求发布</title>
+    <link rel="stylesheet" href="css/swiper.min.css">
+    <link rel="stylesheet" href="css/sdtalk.css">
+    <link rel="shortcut icon" href="images/weblogo.ico" type="image/x-icon" />
+    <script src="js/config.js"></script>
+</head>
+<body>
+<!-- header -->
+<div class="header">
+    <a class="logo" href="index.html">
+        <h1 class="name">尊龙论坛</h1>
+        <p class="desc">想赚钱,找尊龙</p>
+    </a>
+    <div class="other">
+
+    </div>
+</div>
+
+<!-- 轮播图 -->
+<div class="swiper-container">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide" style="background-image: url(images/img1.jpg);">
+            <div class="down-box">
+                <a class="btn btn-down" href="javascript:"><i class="icon icon-down"></i><span>立即下载</span></a>
+                <a class="btn btn-appstore" href="javascript:"><i class="icon icon-appstore"></i><span>立即进入</span></a>
+            </div>
+        </div>
+    </div>
+    <div class="swiper-pagination"></div>
+</div>
+
+<!-- 主内容区 -->
+<div class="content">
+
+    <div class="title mt20">
+        <h2 style="font-size: 25px;">需求发布</h2>
+    </div>
+    <div class="list mt10">
+        <textarea style="height: 150px; width: 1000px; font-size: 20px; font-style: unset; color: dimgray" id="context"></textarea>
+    </div>
+    <button style="width: 100px; height: 60px" id="send">发布</button>
+
+</div>
+    <!-- footer -->
+    <div class="footer">
+        <p>Copyright @ 2020 dowebok. All Rights Reserved.</p>
+        <p><a href="https://www.dowebok.com/">dowebok</a> 版权所有</p>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/swiper.min.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/jquery-3.5.1.js"></script>
+    <script>
+        isLogin(localStorage.getItem("token"))
+        function isLogin(token){
+            $.ajax({
+                url : isLoginUrl,
+                type: 'post',
+                data: {token : token},
+                success : function (data) {
+                    var login = "<a class=\"icon icon-pc\" href=\"login.html\">用户登陆</a>"
+                    var perInfo = "<a class=\"icon icon-phone\" href=\"javascript:\">个人中心</a>"
+                    if(data.state == "YES"){
+                        $(".other").append(perInfo)
+                    } else {
+                        $(".other").append(login)
+                        alert("您没有登陆,请登陆后发布!")
+                        window.open("login.html")
+                    }
+                }
+            })
+        }
+
+        /**
+         * 发布任务
+         * */
+        $("#send").click(function (){
+            context = $("#context").val();
+            sendTalk(context,localStorage.getItem("token"))
+        })
+        function sendTalk(context,token){
+            $.ajax({
+                url : sendTalkUrl,
+                type: 'POST',
+                data: {context : context, token : token},
+                success : function (data){
+                    alert(data.msg)
+                }
+            })
+        }
+    </script>
+
+</body>
+</html>

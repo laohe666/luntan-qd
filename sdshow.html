@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>尊龙论坛--需求列表</title>
+    <link rel="stylesheet" href="css/swiper.min.css">
+    <link rel="stylesheet" href="css/sdshow.css">
+    <script src="js/config.js"></script>
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="shortcut icon" href="images/weblogo.ico" type="image/x-icon" />
+</head>
+<body>
+<!-- header -->
+<div class="header">
+    <a class="logo" href="index.html">
+        <h1 class="name">尊龙论坛</h1>
+        <p class="desc">想赚钱,找尊龙</p>
+    </a>
+    <div class="other">
+
+    </div>
+</div>
+
+<!-- 轮播图 -->
+<!-- 主内容区 -->
+<div class="content">
+    <div class="title mt20">
+        <h2>需求列表</h2>
+    </div>
+    <div class="list mt10">
+        <ul id="show">
+            <li>
+                <a class="to-detail" href="javascript:">
+                    <img class="logo" src="images/logo1.jpg" alt="">
+                    <div class="info">
+                        <h3 class="name">无敌的高德</h3>
+                        <span class="time">2020-03-23</span>
+                    </div>
+                </a>
+                <p class="desc">
+                  高分的你唉发生飞洒发顺丰看看看看附近经济法
+                </p>
+                <div class="down-btns">
+                    <a class="btn btn-down" href="javascript:">已交担保5000</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- footer -->
+<div class="footer">
+    <button id="showMore" style="width: 200px; height: 30px">加载更多</button>
+</div>
+<!-- footer -->
+<div class="footer">
+    <p>Copyright @ 2020. All Rights Reserved.</p>
+    <p><a href="index.html">尊龙论坛</a> 版权所有</p>
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/swiper.min.js"></script>
+<script src="js/script.js"></script>
+<script src="js/jquery-3.5.1.js"></script>
+<script>
+
+    isLogin(localStorage.getItem("token"))
+    function isLogin(token){
+        $.ajax({
+            url : isLoginUrl,
+            type: 'post',
+            data: {token : token},
+            success : function (data) {
+                var login = "<a class=\"icon icon-pc\" href=\"login.html\">用户登陆</a>"
+                var perInfo = "<a class=\"icon icon-phone\" href=\"javascript:\">个人中心</a>"
+                if(data.state == "YES"){
+                    $(".other").append(perInfo)
+                } else {
+                    $(".other").append(login)
+                    alert(data.msg)
+
+                }
+            }
+        })
+    }
+    var pageNum = 1;
+    var pageSize = 8;
+    var total = 0;
+    //通过总数计算来判断多少次
+
+    showTalk(pageNum,pageSize);
+    $("#showMore").click(function (){
+        //通过总数计算来判断多少次
+        time = Math.ceil(total/8);
+        pageNum = pageNum+1;
+        if(pageNum <= time){
+            showTalk(pageNum, pageSize);
+        } else {
+            alert("没有更多记录了")
+        }
+    })
+
+    function showTalk(pageNum,pageSize){
+        $.ajax({
+            url : showAllNTalkUrl,
+            type: 'post',
+            async : false,
+            data: {pageNum : pageNum, pageSize : pageSize},
+            success : function (data) {
+                //判定是否成功
+                if(data.state == 'YES'){
+                    total = data.total;
+                    //循环放入
+                    $.each(data.talks,function (index,talk) {
+                        var RedShow = "<li>\n" +
+                            "<a class=\"to-detail\" href=\"javascript:\">\n" +
+                            "<img class=\"logo\" src=\""+talk.user.headPhoto+"\"alt=\"\">\n" +
+                            "<div class=\"info\">\n" +
+                            "<h3 class=\"name\">"+talk.user.nickname+"</h3>\n" +
+                            "<span class=\"time\">"+talk.sendTime+"</span>\n" +
+                            "</div>\n" +
+                            "</a>\n" +
+                            "<p class=\"desc\">\n" +
+                            talk.context +
+                            "</p>\n" +
+                            "<div class=\"down-btns\">\n" +
+                            "<a class=\"btn btn-down\" href=\"javascript:\" style='background-color: red; border-color : red'>"+talk.des+"</a>\n" +
+                            "</div>\n" +
+                            "</li>";
+
+                        var GreenShow = "<li>\n" +
+                            "<a class=\"to-detail\" href=\"javascript:\">\n" +
+                            "<img class=\"logo\" src=\"images/logo1.jpg\" alt=\"\">\n" +
+                            "<div class=\"info\">\n" +
+                            "<h3 class=\"name\">"+talk.user.nickname+"</h3>\n" +
+                            "<span class=\"time\">"+talk.sendTime+"</span>\n" +
+                            "</div>\n" +
+                            "</a>\n" +
+                            "<p class=\"desc\">\n" +
+                            talk.context +
+                            "</p>\n" +
+                            "<div class=\"down-btns\">\n" +
+                            "<a class=\"btn btn-down\" href=\"javascript:\">"+talk.des+"</a>\n" +
+                            "</div>\n" +
+                            "</li>";
+
+
+                        var BlackShow = "<li>\n" +
+                            "<a class=\"to-detail\" href=\"javascript:\">\n" +
+                            "<img class=\"logo\" src=\""+talk.user.headPhoto+"\"alt=\"\">\n" +
+                            "<div class=\"info\">\n" +
+                            "<h3 class=\"name\">"+talk.user.nickname+"</h3>\n" +
+                            "<span class=\"time\">"+talk.sendTime+"</span>\n" +
+                            "</div>\n" +
+                            "</a>\n" +
+                            "<p class=\"desc\">\n" +
+                            talk.context +
+                            "</p>\n" +
+                            "<div class=\"down-btns\">\n" +
+                            "<a class=\"btn btn-down\" href=\"javascript:\" style='background-color: black; border-color : black'>"+talk.des+"</a>\n" +
+                            "</div>\n" +
+                            "</li>";
+
+                        if(talk.state == 'B'){
+                            $("#show").append(BlackShow)
+                        } else if(talk.state == 'R'){
+                            $("#show").append(RedShow)
+                        } else {
+                            $("#show").append(GreenShow)
+                        }
+                    })
+                } else {
+                    alert(data.msg);
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>
