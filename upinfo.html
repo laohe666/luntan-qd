@@ -12,7 +12,7 @@
 <body>
 <!-- header -->
 <div class="header">
-    <a class="logo" href="#">
+    <a class="logo" href="index.html">
         <h1 class="name">尊龙论坛</h1>
         <p class="desc">想赚钱,找尊龙</p>
     </a>
@@ -41,16 +41,12 @@
     </div>
 
     <div class="list mt10">
-        <button>
-           头像: <input type="file" style="width: 100px">
-        <button id="upHead">修改头像</button>
-        </button>
         <p>
            <button style="height: 50px">
-           昵称：<input type="text">
-           旧密码: <input type="text">
-           新密码: <input type="text">
-               <button id="up">
+           昵称：<input type="text" id="nickname">
+           旧密码: <input type="text" id="oldPsd">
+           新密码: <input type="text" id="newPsd">
+               <button id="up">确认修改</button>
            </button>
         </p>
     </div>
@@ -86,6 +82,40 @@
             }
         })
     }
+
+    $("#up").click(function () {
+
+         $.ajax({
+             url : upUsrInfo,
+             type: 'post',
+             async : false,
+             data: {nickname : $("#nickname").val(), oldPsd : $("#oldPsd").val(), newPsd : $("#newPsd").val()}
+             success : function (data) {
+                alert(data.msg)
+             }
+         })
+    })
+
+
+
+
+    // $("#upHead").click(function () {
+    //     upHead($("#file").add())
+    // })
+    //
+    // function upHead(file) {
+    //     $.ajax({
+    //         url : upUsrHeadUrl,
+    //         type: "post",
+    //         processData: false,
+    //         contentType: false,
+    //         data: {file : file, token : localStorage.getItem("token")},
+    //         async : false,
+    //         success : function (data) {
+    //             alert(data.msg)
+    //         }
+    //     })
+    // }
 </script>
 </body>
 </html>

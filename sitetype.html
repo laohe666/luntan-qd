@@ -93,7 +93,7 @@
                     <p class="desc">集合各类网站</p>
                 </a>
                 <div class="down-btns">
-                    <a class="btn btn-down" href="javascript:">点击进入</a>
+                    <button class="btn btn-down" href="javascript:" value="1">点击进入</button>
                 </div>
             </li>
         </ul>
@@ -115,10 +115,9 @@
             url : isLoginUrl,
             type: 'post',
             data: {token : token},
-            async : false,
             success : function (data) {
                 var login = "<a class=\"icon icon-pc\" href=\"login.html\">用户登陆</a>"
-                var perInfo = "<a class=\"icon icon-phone\" href=\"javascript:\">个人中心</a>"
+                var perInfo = "<a class=\"icon icon-phone\" href=\"upinfo.html\">个人中心</a>"
                 if(data.state == "YES"){
                     $(".other").append(perInfo)
                 } else {
@@ -130,11 +129,12 @@
     }
 
         showAllWTN();
-
+        var $button
         //调用数据库查询列表
         function showAllWTN() {
            $.ajax({
                url : showAllNWTUrl,
+               async : false,
                success : function (data) {
                    //如果查询
                   if(data.state == 'YES'){
@@ -148,15 +148,24 @@
                               "<p class=\"desc\">"+webType.des+"</p>\n" +
                               "</a>\n" +
                               "<div class=\"down-btns\">\n" +
-                              "<button class=\"btn btn-down\" href=\"javascript:\">点击进入</button>\n" +
+                              "<button class=\"btn btn-down\" name='"+webType.typeName+ "'  href=\"javascript:\" value='"+webType.wid+"'>点击进入</button>\n" +
                               "</div>\n" +
                               "</li>";
                           $("#wtShow").append(show);
                       })
+                      //再给所有button加上单击事件
+                      $button = $("button[class='btn btn-down']");
                   }
                }
            })
         }
+
+        $button.click(function () {
+            localStorage.setItem("webTypeName",this.name)
+            localStorage.setItem("webTypeId",this.value)
+            window.open("sites.html")
+        })
+
     </script>
 </body>
 </html>
