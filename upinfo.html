@@ -84,13 +84,15 @@
     }
 
     $("#up").click(function () {
-
-         $.ajax({
+        $.ajax({
              url : upUsrInfo,
              type: 'post',
              async : false,
-             data: {nickname : $("#nickname").val(), oldPsd : $("#oldPsd").val(), newPsd : $("#newPsd").val()}
+             data: {nickname : $("#nickname").val(), oldPsd : $("#oldPsd").val(), newPsd : $("#newPsd").val(), token : localStorage.getItem("token")},
              success : function (data) {
+                 $("#nickname").val("")
+                 $("#oldPsd").val("")
+                 $("#newPsd").val("")
                 alert(data.msg)
              }
          })
