@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>尊龙论坛-担保专区</title>
+    <link rel="stylesheet" href="css/swiper.min.css">
+    <link rel="stylesheet" href="css/assure.css">
+    <link rel="shortcut icon" href="images/weblogo.ico" type="image/x-icon" />
+    <script src="js/config.js"></script>
+</head>
+<body>
+<!-- header -->
+<div class="header">
+    <a class="logo" href="index.html">
+        <h1 class="name">尊龙论坛</h1>
+        <p class="desc"></p>
+    </a>
+    <div class="other">
+
+    </div>
+</div>
+
+<!-- 轮播图 -->
+<div class="swiper-container">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide" style="background-image: url(images/img1.jpg);">
+            <div class="down-box">
+                <a class="btn btn-down" href="javascript:"><i class="icon icon-down"></i><span>立即下载</span></a>
+                <a class="btn btn-appstore" href="javascript:"><i class="icon icon-appstore"></i><span>App Store</span></a>
+            </div>
+        </div>
+        <div class="swiper-slide" style="background-image: url(images/img2.jpg);">
+            <div class="down-box">
+                <a class="btn btn-down" href="javascript:"><i class="icon icon-down"></i><span>立即下载</span></a>
+                <a class="btn btn-appstore" href="javascript:"><i class="icon icon-appstore"></i><span>App Store</span></a>
+            </div>
+        </div>
+        <div class="swiper-slide" style="background-image: url(images/img3.jpg);">
+            <div class="down-box">
+                <a class="btn btn-down" href="javascript:"><i class="icon icon-down"></i><span>立即下载</span></a>
+                <a class="btn btn-appstore" href="javascript:"><i class="icon icon-appstore"></i><span>App Store</span></a>
+            </div>
+        </div>
+        <div class="swiper-slide" style="background-image: url(images/img4.jpg);">
+            <div class="down-box">
+                <a class="btn btn-down" href="javascript:"><i class="icon icon-down"></i><span>立即下载</span></a>
+                <a class="btn btn-appstore" href="javascript:" style="border-color: #d6d6d6;"><i class="icon icon-appstore"></i><span>App Store</span></a>
+            </div>
+        </div>
+        <div class="swiper-slide" style="background-image: url(images/img5.jpg);">
+            <div class="down-box">
+                <a class="btn btn-down" href="javascript:"><i class="icon icon-down"></i><span>立即下载</span></a>
+                <a class="btn btn-appstore" href="javascript:"><i class="icon icon-appstore"></i><span>App Store</span></a>
+            </div>
+        </div>
+        <div class="swiper-slide" style="background-image: url(images/img6.jpg);">
+            <div class="down-box">
+                <a class="btn btn-down" href="javascript:"><i class="icon icon-down"></i><span>立即下载</span></a>
+                <a class="btn btn-appstore" href="javascript:"><i class="icon icon-appstore"></i><span>App Store</span></a>
+            </div>
+        </div>
+        <div class="swiper-slide" style="background-image: url(images/img7.jpg);">
+            <div class="down-box">
+                <a class="btn btn-down" href="javascript:"><i class="icon icon-down"></i><span>立即下载</span></a>
+                <a class="btn btn-appstore" href="javascript:"><i class="icon icon-appstore"></i><span>App Store</span></a>
+            </div>
+        </div>
+        <div class="swiper-slide" style="background-image: url(images/img8.jpg);">
+            <div class="down-box">
+                <a class="btn btn-down" href="javascript:"><i class="icon icon-down"></i><span>立即下载</span></a>
+                <a class="btn btn-appstore" href="javascript:"><i class="icon icon-appstore"></i><span>App Store</span></a>
+            </div>
+        </div>
+    </div>
+    <div class="swiper-pagination"></div>
+</div>
+
+<!-- 主内容区 -->
+<div class="content">
+    <div class="title mt20">
+        <h2>担保网站</h2>
+    </div>
+
+    <div class="list mt10">
+        <ul id="wtShow">
+
+        </ul>
+    </div>
+</div>
+<!-- footer -->
+<div class="footer">
+    <p>Copyright @ 2020 dowebok. All Rights Reserved.</p>
+    <p><a href="#">尊龙论坛</a> 版权所有</p>
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/swiper.min.js"></script>
+<script src="js/script.js"></script>
+<script src="js/jquery-3.5.1.js"></script>
+<script>
+    isLogin(localStorage.getItem("token"))
+    function isLogin(token){
+        $.ajax({
+        url : isLoginUrl,
+        type: 'post',
+        data: {token : token},
+        success : function (data) {
+            var login = "<a class=\"icon icon-pc\" href=\"login.html\">用户登陆</a>"
+            var perInfo = "<a class=\"icon icon-phone\" href=\"upinfo.html\">个人中心</a>"
+            if(data.state == "YES"){
+                $(".other").append(perInfo)
+            } else {
+                $(".other").append(login)
+
+            }
+        }
+    })
+    }
+
+    showAllWTN();
+
+    //调用数据库查询列表
+    function showAllWTN() {
+        $.ajax({
+            url : showAllNAssureUrl,
+            type: 'post',
+            async : false,
+            success : function (data) {
+                //如果查询
+                if(data.state == 'YES'){
+                    $.each(data.assures,function (index,assure) {
+                        var show = "<li>\n" +
+                            "<a class=\"to-detail\" href=\"javascript:\">\n" +
+                            "<img class=\"logo\" src='"+assure.imgUrl+"' alt=\"\">\n" +
+                            "<div class=\"info\">\n" +
+                            "<h3 class=\"name\">"+assure.name+"</h3>\n" +
+                            "</div>\n" +
+                            "<p class=\"desc\">"+assure.des+"</p>\n" +
+                            "</a>\n" +
+                            "<div class=\"down-btns btns2\">\n" +
+                            "<a class=\"btn btn-down\" href='"+assure.loginAddr+"'>登陆地址</a>\n" +
+                            "<a class=\"btn btn-appstore\" href='"+assure.regAddr+"'><i class=\"icon-appstore\"></i>注册地址</a>\n" +
+                            "</div>\n" +
+                            "</li>"
+                        $("#wtShow").append(show);
+                    })
+                    //再给所有button加上单击事件
+                    $button = $("button[class='btn btn-down']");
+                }
+            }
+        })
+    }
+
+
+</script>
+</body>
+</html>
